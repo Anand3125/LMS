@@ -21,14 +21,19 @@ const PORT = process.env.PORT || 3000;
 // 🔧 Middlewares
 app.use(express.json());
 app.use(cookieParser());
-// app.use(cors({
-//   origin: "http://localhost:5173",
-//   credentials: true
-// }));
 app.use(cors({
-  origin: clientUrl,
+  // origin: "http://localhost:5173",
+  origin: "http://  lms-zq1s.onrender.com",
+
+
+
+
   credentials: true
 }));
+// app.use(cors({
+//   origin: clientUrl,
+//   credentials: true
+// }));
 
 // 🧩 Routes
 app.use("/api/v1/media", mediaRoute);
