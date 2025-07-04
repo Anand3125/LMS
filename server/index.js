@@ -10,7 +10,7 @@ import purchaseRoute from "./routes/purchaseCourse.route.js";
 import courseProgressRoute from "./routes/courseProgress.route.js";
 import cron from "node-cron";
 import axios from "axios";
-
+import { clientUrl } from "utils/baseurl";
 dotenv.config();
 
 // 📡 Connect to MongoDB
@@ -21,8 +21,12 @@ const PORT = process.env.PORT || 3000;
 // 🔧 Middlewares
 app.use(express.json());
 app.use(cookieParser());
+// app.use(cors({
+//   origin: "http://localhost:5173",
+//   credentials: true
+// }));
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: clientUrl,
   credentials: true
 }));
 
