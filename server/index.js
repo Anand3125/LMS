@@ -8,34 +8,42 @@ import courseRoute from "./routes/course.route.js";
 import mediaRoute from "./routes/media.route.js";
 import purchaseRoute from "./routes/purchaseCourse.route.js";
 import courseProgressRoute from "./routes/courseProgress.route.js";
+import cron from "node-cron";
+import axios from "axios";
 
-dotenv.config({});
+dotenv.config();
 
-// call database connection here
+// 📡 Connect to MongoDB
 connectDB();
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
-// default middleware
+// 🔧 Middlewares
 app.use(express.json());
 app.use(cookieParser());
-
 app.use(cors({
-    origin:"http://localhost:5173",
-    credentials:true
+  origin: "http://localhost:5173",
+  credentials: true
 }));
- 
-// apis
+
+// 🧩 Routes
 app.use("/api/v1/media", mediaRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/course", courseRoute);
 app.use("/api/v1/purchase", purchaseRoute);
 app.use("/api/v1/progress", courseProgressRoute);
- 
- 
+
+// ⏰ Cron Job - Fetch user profile every 14 minutes
+cron.schedule("*/14 * * * *", async () => {
+  try {
+    const response = await axios.get("https://lms-zq1s.onrender.com/api/v1/user/profile");
+    console.log("⏰ Cron Job Executed: /api/v1/user/profile ✅ Status:", response.status);
+  } catch (error) {
+    console.error("⚠️ Cron Job Error while calling /profile:", error.message);
+  }
+});
+
+// 🚀 Start server
 app.listen(PORT, () => {
-    console.log(`Server listen at port ${PORT}`);
-})
-
-
+  console.log(`🚀 Server is running on http://localhost:${PORT} 🌐`);
+});
