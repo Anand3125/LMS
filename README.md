@@ -148,13 +148,13 @@ Hi, I'm **Anand Kumar**, a full-stack developer passionate about remote learning
 ## 🤝 Contributing
 
 Pull requests are welcome! Please open an issue for any major changes or feature suggestions.
-
----
-
 ## 📄 License
 
 This project is licensed under the **Anand Kumar Licensed**.
+---
 
-```
+
+
+
 
 
