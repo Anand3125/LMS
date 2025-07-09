@@ -17,4 +17,18 @@ router.route("/upload-video").post(upload.single("file"), async(req,res) => {
         res.status(500).json({message:"Error uploading file"})
     }
 });
+
+router.route("/upload-pdf").post(upload.single("file"), async(req,res) => {
+    try {
+        const result = await uploadMedia(req.file.path); // This should work for PDFs too
+        res.status(200).json({
+            success:true,
+            message:"PDF uploaded successfully.",
+            data:result
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:"Error uploading PDF"})
+    }
+});
 export default router;

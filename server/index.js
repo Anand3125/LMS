@@ -39,15 +39,15 @@ app.use("/api/v1/purchase", purchaseRoute);
 app.use("/api/v1/progress", courseProgressRoute);
 
 // ⏰ Cron Job - Fetch user profile every 14 minutes
-cron.schedule("*/14 * * * *", async () => {
-  try {
-    // const response = await axios.get("https://lms-zq1s.onrender.com/api/v1/user/profile");
-    const response = await axios.get("http://localhost:8080/api/v1/user/profile");
-    console.log("⏰ Cron Job Executed: /api/v1/user/profile ✅ Status:", response.status);
-  } catch (error) {
-    console.error("⚠️ Cron Job Error while calling /profile:", error.message);
-  }
-});
+// cron.schedule("*/14 * * * *", async () => {
+//   try {
+//     // const response = await axios.get("https://lms-zq1s.onrender.com/api/v1/user/profile");
+//     const response = await axios.get("http://localhost:8080/api/v1/user/profile");
+//     console.log("⏰ Cron Job Executed: /api/v1/user/profile ✅ Status:", response.status);
+//   } catch (error) {
+//     console.error("⚠️ Cron Job Error while calling /profile:", error.message);
+//   }
+// });
 
 // 🚀 Start server
 app.listen(PORT, () => {

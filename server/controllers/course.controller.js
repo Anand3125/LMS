@@ -172,7 +172,7 @@ export const getCourseById = async (req,res) => {
 
 export const createLecture = async (req,res) => {
     try {
-        const {lectureTitle} = req.body;
+        const { lectureTitle, youtubeUrl, pdfUrl } = req.body;
         const {courseId} = req.params;
 
         if(!lectureTitle || !courseId){
@@ -182,7 +182,7 @@ export const createLecture = async (req,res) => {
         };
 
         // create lecture
-        const lecture = await Lecture.create({lectureTitle});
+        const lecture = await Lecture.create({ lectureTitle, youtubeUrl, pdfUrl });
 
         const course = await Course.findById(courseId);
         if(course){
@@ -238,6 +238,8 @@ export const editLecture = async (req,res) => {
         if(lectureTitle) lecture.lectureTitle = lectureTitle;
         if(videoInfo?.videoUrl) lecture.videoUrl = videoInfo.videoUrl;
         if(videoInfo?.publicId) lecture.publicId = videoInfo.publicId;
+        if (youtubeUrl !== undefined) lecture.youtubeUrl = youtubeUrl;
+        if (pdfUrl !== undefined) lecture.pdfUrl = pdfUrl;
         lecture.isPreviewFree = isPreviewFree;
 
         await lecture.save();

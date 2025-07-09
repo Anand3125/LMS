@@ -2,3 +2,11 @@
 2nd deploy with cron job 
 
 ![image](https://github.com/user-attachments/assets/f3598989-685e-4884-8660-97e67f0e4464)
+
+
+api response on cousre-
+
+http://localhost:8080/api/v1/course/published-courses
+
+http://localhost:8080/api/v1/user/profile
+

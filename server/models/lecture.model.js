@@ -8,6 +8,12 @@ const lectureSchema = new mongoose.Schema({
   videoUrl: { type: String },
   publicId: { type: String },
   isPreviewFree: { type: Boolean },
-},{timestamps:true});
+  youtubeUrl: {
+    type: String,
+    required: false,  // make optional to maintain backward compatibility
+  },
+  
+  pdfUrl:{ type: String }
+  },{timestamps:true});
 
 export const Lecture = mongoose.model("Lecture", lectureSchema);

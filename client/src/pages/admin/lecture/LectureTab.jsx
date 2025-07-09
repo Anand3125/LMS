@@ -32,6 +32,9 @@ const LectureTab = () => {
   const [mediaProgress, setMediaProgress] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [btnDisable, setBtnDisable] = useState(true);
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [pdfUrl, setPdfUrl] = useState("");
+  const [uploadingPdf, setUploadingPdf] = useState(false);
   const params = useParams();
   const { courseId, lectureId } = params;
 
@@ -42,9 +45,11 @@ const LectureTab = () => {
     if(lecture){
       setLectureTitle(lecture.lectureTitle);
       setIsFree(lecture.isPreviewFree);
-      setUploadVideoInfo(lecture.videoInfo)
+      setUploadVideoInfo(lecture.videoInfo);
+      setYoutubeUrl(lecture.youtubeUrl || "");
+      setPdfUrl(lecture.pdfUrl || "");
     }
-  },[lecture])
+  },[lecture]);
 
   const [edtiLecture, { data, isLoading, error, isSuccess }] =
     useEditLectureMutation();
@@ -81,6 +86,28 @@ const LectureTab = () => {
     }
   };
 
+  // PDF upload handler
+  const handlePdfChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadingPdf(true);
+      const formData = new FormData();
+      formData.append("file", file);
+      try {
+        const res = await axios.post(`${MEDIA_API}/upload-pdf`, formData);
+        if (res.data.success) {
+          setPdfUrl(res.data.data.url || res.data.data.secure_url);
+          toast.success("PDF uploaded successfully!");
+        } else {
+          toast.error("PDF upload failed.");
+        }
+      } catch (err) {
+        toast.error("PDF upload error.");
+      }
+      setUploadingPdf(false);
+    }
+  };
+
   const editLectureHandler = async () => {
     console.log({ lectureTitle, uploadVideInfo, isFree, courseId, lectureId });
 
@@ -90,6 +117,8 @@ const LectureTab = () => {
       isPreviewFree:isFree,
       courseId,
       lectureId,
+      youtubeUrl,
+      pdfUrl,
     });
   };
 
@@ -154,6 +183,38 @@ const LectureTab = () => {
             className="w-fit"
           />
         </div>
+        {/* --- NEW: YouTube Link --- */}
+        <div className="my-5">
+          <Label>YouTube Video Link</Label>
+          <Input
+            type="text"
+            value={youtubeUrl}
+            onChange={(e) => setYoutubeUrl(e.target.value)}
+            placeholder="Paste YouTube video link"
+          />
+        </div>
+        {/* --- NEW: PDF Upload --- */}
+        <div className="my-5">
+          <Label>PDF File</Label>
+          <Input
+            type="file"
+            accept="application/pdf"
+            onChange={handlePdfChange}
+            className="w-fit"
+          />
+          {uploadingPdf && <span className="text-blue-500 text-sm">Uploading PDF...</span>}
+          {pdfUrl && (
+            <a
+              href={pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-green-600 text-sm mt-1"
+            >
+              PDF Uploaded (View)
+            </a>
+          )}
+        </div>
+        {/* --- END NEW --- */}
         <div className="flex items-center space-x-2 my-5">
           <Switch checked={isFree} onCheckedChange={setIsFree} id="airplane-mode" />
           <Label htmlFor="airplane-mode">Is this video FREE</Label>

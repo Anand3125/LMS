@@ -13,6 +13,10 @@ import Lecture from "./Lecture";
 
 const CreateLecture = () => {
   const [lectureTitle, setLectureTitle] = useState("");
+  const [youtubeLink, setYoutubeLink] = useState("");
+  const [pdfFile, setPdfFile] = useState(null);
+  const [pdfUrl, setPdfUrl] = useState("");
+  const [uploadingPdf, setUploadingPdf] = useState(false);
   const params = useParams();
   const courseId = params.courseId;
   const navigate = useNavigate();
@@ -28,8 +32,14 @@ const CreateLecture = () => {
   } = useGetCourseLectureQuery(courseId);
 
   const createLectureHandler = async () => {
-    await createLecture({ lectureTitle, courseId });
+    await createLecture({
+      lectureTitle,
+      courseId,
+      youtubeLink,
+      pdfUrl,
+    });
   };
+
 
   useEffect(() => {
     if (isSuccess) {
@@ -63,6 +73,45 @@ const CreateLecture = () => {
             onChange={(e) => setLectureTitle(e.target.value)}
             placeholder="Your Title Name"
           />
+        </div>
+        <div>
+          <Label>YouTube Video Link</Label>
+          <Input
+            type="text"
+            value={youtubeLink}
+            onChange={(e) => setYoutubeLink(e.target.value)}
+            placeholder="Paste YouTube video link"
+          />
+        </div>
+        <div>
+          <Label>PDF File</Label>
+          <Input
+            type="file"
+            accept="application/pdf"
+            onChange={async (e) => {
+              const file = e.target.files[0];
+              setPdfFile(file);
+              if (file) {
+                setUploadingPdf(true);
+                // Upload PDF to backend
+                const formData = new FormData();
+                formData.append("file", file);
+                const res = await fetch("/api/media/upload-pdf", {
+                  method: "POST",
+                  body: formData,
+                });
+                const data = await res.json();
+                setPdfUrl(data.data.url); // Adjust according to your backend response
+                setUploadingPdf(false);
+              }
+            }}
+          />
+          {uploadingPdf && <span>Uploading PDF...</span>}
+          {pdfUrl && (
+            <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+              PDF Uploaded (View)
+            </a>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <Button

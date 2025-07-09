@@ -65,15 +65,44 @@ const CourseDetail = () => {
           <Card>
             <CardHeader>
               <CardTitle>Course Content</CardTitle>
-              <CardDescription>4 lectures</CardDescription>
+              <CardDescription>{course.lectures.length} lectures</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-6">
               {course.lectures.map((lecture, idx) => (
-                <div key={idx} className="flex items-center gap-3 text-sm">
-                  <span>
-                    {true ? <PlayCircle size={14} /> : <Lock size={14} />}
-                  </span>
-                  <p>{lecture.lectureTitle}</p>
+                <div key={idx} className="flex flex-col gap-2 p-3 border-b last:border-b-0">
+                  <div className="flex items-center gap-3 text-sm">
+                    <span>
+                      {true ? <PlayCircle size={14} /> : <Lock size={14} />}
+                    </span>
+                    <p className="font-semibold">Lecture {idx + 1}: {lecture.lectureTitle}</p>
+                  </div>
+                  {/* YouTube Video Embed */}
+                  {lecture.youtubeUrl && (
+                    <div className="my-2">
+                      <iframe
+                        width="100%"
+                        height="236"
+                        src={lecture.youtubeUrl.replace("watch?v=", "embed/")}
+                        title={`YouTube video for ${lecture.lectureTitle}`}
+                        frameBorder="0"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
+                  )}
+                  {/* PDF Download */}
+                  {lecture.pdfUrl && (
+                    <div className="my-2">
+                      <a
+                        href={lecture.pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 underline"
+                        download
+                      >
+                        Download PDF
+                      </a>
+                    </div>
+                  )}
                 </div>
               ))}
             </CardContent>
