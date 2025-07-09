@@ -1,8 +1,4 @@
-Here's your **rewritten version of the README**, formatted to describe a **MERN stack** project instead of Django/Next.js. It's structured and clean — you can directly paste it into your LMS MERN repo or use it as a base.
 
----
-
-````markdown
 # 👋 Hi, I'm Anand Kumar
 
 🎓 Full-Stack Developer | MERN + Python | AI Integration Enthusiast  
@@ -157,16 +153,8 @@ Pull requests are welcome! Please open an issue for any major changes or feature
 
 ## 📄 License
 
-This project is licensed under the **MIT License**.
+This project is licensed under the **Anand Kumar Licensed**.
 
 ```
 
----
 
-Let me know if you'd like to include:
-- Screenshot or GIF demo section  
-- Gemini AI code examples  
-- Swagger/Redoc API documentation section  
-
-Happy to help you polish it further!
-```
